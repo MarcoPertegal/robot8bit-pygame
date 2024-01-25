@@ -1,62 +1,66 @@
 import pygame
 from game.models.player import Player
-from game.models.obstacle import Obstacle
+from game.models.rock import Rock
 
 pygame.init()
 
-#Imagenes
+# Imagenes
 bg = pygame.image.load("../assets/background.png")
-skin = pygame.image.load("../assets/skin.png")
-obstacle = pygame.image.load("../assets/obstacle.png")
+player_skin = pygame.image.load("../assets/skin.png")
+obstacle_skin = pygame.image.load("../assets/rock.png")
 
-#Skin player
-scaled_skin = pygame.transform.scale(skin, (120, 120))
-player_one = Player(scaled_skin)
+# Skin player
+player_one = Player(player_skin)
 
-#Obstaculo
-scaled_obstacle = pygame.transform.scale(obstacle, (100, 70))
-obstacle = Obstacle(scaled_obstacle)
+# Obstaculo
+rock = Rock(obstacle_skin)
 
-#Pantalla
+# Pantalla
 screen = pygame.display.set_mode((1100, 620))
 
-#Puntuacion
+# Puntuacion
 font = pygame.font.Font(None, 36)
 score = 0
+
+# Posicion inicial del player
+player_initial_pos = [(screen.get_width() - player_one.size[0]) // 2, (screen.get_height() - player_one.size[1]) // 2]
+player_one.position = player_initial_pos
 
 running = True
 
 while running:
     for event in pygame.event.get():
-        #Moviemiento
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_d]:
-                #intento de colision con la piedra parece que el metodo siempre devuelve false
-                if not player_one.check_collision(obstacle):
-                    #para que el player no pueda salirse de la pantalla
-                    if player_one.position[0] + player_one.size[0] < screen.get_width():
-                        player_one.move_right()
-            if keys[pygame.K_a]:
-                if player_one.position[0] > 0:
-                    player_one.move_left()
-            if keys[pygame.K_w]:
-                if player_one.position[1] > 0:
-                    player_one.move_up()
-            if keys[pygame.K_s]:
-                if player_one.position[1] + player_one.size[1] < screen.get_height():
-                    player_one.move_down()
+        # Problema cuando el player esta junto a la piedra no deja moverse, EL JUSGO SE BUGGEA AL MOVER EL RATON
+        #ver para hacer cuadriculas porque sino el personaje se puede quedar entre dos cuadrados y daproblemasRub
+        # herencia con obstacle
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_d]:
+            new_x = player_one.position[0] + player_one.speed
+            if new_x + player_one.size[0] < screen.get_width() and not player_one.check_collision(rock):
+                player_one.move_right()
+        if keys[pygame.K_a]:
+            if player_one.position[0] > 0:
+                player_one.move_left()
+        if keys[pygame.K_w]:
+            new_x = player_one.position[1] + player_one.speed
+            if new_x + player_one.size[0] < screen.get_width() and not player_one.check_collision(rock):
+                player_one.move_up()
+        if keys[pygame.K_s]:
+            if player_one.position[1] + player_one.size[1] < screen.get_height():
+                player_one.move_down()
 
-    #pintar pantalla y fondo
+#Se necesitaria un mapa precargado y haciendo uso de un COMO MURO Y PINCHE TIENE LOS MISMOS ATRIBUTOS HABRIA QUE HACER HERENCIA
+#
+    # pintar pantalla y fondo
     screen.blit(bg, (0, 0))
 
     # pintar la skin
-    screen.blit(player_one.skin, (player_one.position[0], player_one.position[1]))
+    screen.blit(player_one.player_skin, (player_one.position[0], player_one.position[1]))
 
     # pintar obstacle
-    screen.blit(obstacle.skin,
-                     (obstacle.position[0], obstacle.position[1]))
+    screen.blit(rock.obstacle_skin, (rock.position[0], rock.position[1]))
 
-    #La puntuacion
+    # La puntuacion
     text = font.render("Score: " + str(score), 1, (10, 10, 10))
     screen.blit(text, (10, 10))
 
