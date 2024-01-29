@@ -1,10 +1,11 @@
 import math, pygame, sprites
 
+
 def Player_animation(self):
     self.down_animation = [
-        #Lo que va entre parentesiss son las cordenadas para seleccinar cada posicion de personaje en la imagen
-        #self.game.character_spritesheet.get_sprite(210, 0, self.width, self.height), si quiero pintar otro
-        #sprite tengo que ir cambiando los numeros de los pixeles teniendo una imagen de 200 por 200
+        # Lo que va entre parentesiss son las cordenadas para seleccinar cada posicion de personaje en la imagen
+        # self.game.character_spritesheet.get_sprite(210, 0, self.width, self.height), si quiero pintar otro
+        # sprite tengo que ir cambiando los numeros de los pixeles teniendo una imagen de 200 por 200
         self.game.character_spritesheet.get_sprite(0, 0, self.width, self.height),
         self.game.character_spritesheet.get_sprite(32, 0, self.width, self.height),
         self.game.character_spritesheet.get_sprite(64, 0, self.width, self.height)
@@ -14,16 +15,17 @@ def Player_animation(self):
         self.game.character_spritesheet.get_sprite(32, 32, self.width, self.height),
         self.game.character_spritesheet.get_sprite(64, 32, self.width, self.height)
     ]
-    self.down_animation = [
+    self.left_animation = [
         self.game.character_spritesheet.get_sprite(0, 96, self.width, self.height),
         self.game.character_spritesheet.get_sprite(32, 96, self.width, self.height),
         self.game.character_spritesheet.get_sprite(64, 96, self.width, self.height)
     ]
-    self.down_animation = [
+    self.right_animation = [
         self.game.character_spritesheet.get_sprite(0, 64, self.width, self.height),
         self.game.character_spritesheet.get_sprite(32, 64, self.width, self.height),
         self.game.character_spritesheet.get_sprite(64, 64, self.width, self.height)
     ]
+
 
 def Player_animation_animate(self):
     if self.facing == 'down':
@@ -45,7 +47,7 @@ def Player_animation_animate(self):
                 self.animation_loop = 1
 
     if self.facing == 'left':
-        if self.y_change == 0:
+        if self.x_change == 0:
             self.image = self.game.character_spritesheet.get_sprite(0, 96, self.width, self.height)
         else:
             self.image = self.left_animation[math.floor(self.animation_loop)]
@@ -54,7 +56,7 @@ def Player_animation_animate(self):
                 self.animation_loop = 1
 
     if self.facing == 'right':
-        if self.y_change == 0:
+        if self.x_change == 0:
             self.image = self.game.character_spritesheet.get_sprite(0, 64, self.width, self.height)
         else:
             self.image = self.right_animation[math.floor(self.animation_loop)]

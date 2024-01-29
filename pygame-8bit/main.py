@@ -15,13 +15,17 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.groundsheet = Spritesheet('assets/gound4.png')
-        self.character_spritesheet = Spritesheet('assets/character.png')
+        self.character_spritesheet = Spritesheet('assets/character2.png')
+        self.wallsheet = Spritesheet('assets/spikes.png')
+        self.lavasheet = Spritesheet('assets/lava.png')
     def createTileMap(self, tilemap):
         build_map(self, tilemap)
 
     def new(self, tilemap):
         self.playing = True
         self.all_skins = pygame.sprite.LayeredUpdates()
+        self.walls = pygame.sprite.LayeredUpdates()
+        self.lava = pygame.sprite.LayeredUpdates()
         self.createTileMap(tilemap)
 
 
@@ -54,7 +58,7 @@ class Game:
     def intro_screen(self):
         pass
 
-#Creacion del mapa
+#Creacion del mapa y del bucle del juego
 TILEMAP = maps.world_1.stage_1
 game = Game()
 game.new(TILEMAP)
