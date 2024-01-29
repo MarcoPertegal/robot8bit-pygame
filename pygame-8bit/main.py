@@ -15,7 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.groundsheet = Spritesheet('assets/gound4.png')
-        self.character_spritesheet = Spritesheet('assets/ground.png')
+        self.character_spritesheet = Spritesheet('assets/character.png')
     def createTileMap(self, tilemap):
         build_map(self, tilemap)
 
@@ -24,9 +24,6 @@ class Game:
         self.all_skins = pygame.sprite.LayeredUpdates()
         self.createTileMap(tilemap)
 
-        """
-        self.rocks = pygame.sprite.LayeredUpdates()
-        self.player = Player(self, 1, 2)"""
 
     def events(self):
         for event in pygame.event.get():
