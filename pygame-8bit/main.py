@@ -15,7 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.groundsheet = Spritesheet('assets/gound4.png')
-        self.character_spritesheet = Spritesheet('assets/character2.png')
+        self.character_spritesheet = Spritesheet('assets/character4.png')
         self.wallsheet = Spritesheet('assets/spikes.png')
         self.lavasheet = Spritesheet('assets/lava.png')
     def createTileMap(self, tilemap):
