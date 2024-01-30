@@ -53,8 +53,9 @@ class Game:
     def game_over(self):
         pass
 
-    def intro_screen(self):
-        pass
+    def intro_screen(self, startresume):
+        intro = True
+        
 
 #Creacion del mapa y del bucle del juego
 TILEMAP = maps.world_1.stage_1
