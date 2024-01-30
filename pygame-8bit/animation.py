@@ -11,19 +11,19 @@ def Player_animation(self):
         self.game.character_spritesheet.get_sprite(64, 0, self.width, self.height)
     ]
     self.up_animation = [
-        self.game.character_spritesheet.get_sprite(0, 32, self.width, self.height),
-        self.game.character_spritesheet.get_sprite(32, 32, self.width, self.height),
-        self.game.character_spritesheet.get_sprite(64, 32, self.width, self.height)
+        self.game.character_spritesheet.get_sprite(0, 38, self.width, self.height),
+        self.game.character_spritesheet.get_sprite(38, 38, self.width, self.height),
+        self.game.character_spritesheet.get_sprite(64, 38, self.width, self.height)
     ]
     self.left_animation = [
-        self.game.character_spritesheet.get_sprite(0, 96, self.width, self.height),
-        self.game.character_spritesheet.get_sprite(32, 96, self.width, self.height),
-        self.game.character_spritesheet.get_sprite(64, 96, self.width, self.height)
+        self.game.character_spritesheet.get_sprite(0, 105, self.width, self.height),
+        self.game.character_spritesheet.get_sprite(32, 105, self.width, self.height),
+        self.game.character_spritesheet.get_sprite(64, 105, self.width, self.height)
     ]
     self.right_animation = [
-        self.game.character_spritesheet.get_sprite(0, 64, self.width, self.height),
-        self.game.character_spritesheet.get_sprite(32, 64, self.width, self.height),
-        self.game.character_spritesheet.get_sprite(64, 64, self.width, self.height)
+        self.game.character_spritesheet.get_sprite(0, 71, self.width, self.height),
+        self.game.character_spritesheet.get_sprite(32, 71, self.width, self.height),
+        self.game.character_spritesheet.get_sprite(64, 71, self.width, self.height)
     ]
 
 
@@ -39,7 +39,7 @@ def Player_animation_animate(self):
 
     if self.facing == 'up':
         if self.y_change == 0:
-            self.image = self.game.character_spritesheet.get_sprite(0, 32, self.width, self.height)
+            self.image = self.game.character_spritesheet.get_sprite(0, 38, self.width, self.height)
         else:
             self.image = self.up_animation[math.floor(self.animation_loop)]
             self.animation_loop += 0.1
@@ -48,7 +48,7 @@ def Player_animation_animate(self):
 
     if self.facing == 'left':
         if self.x_change == 0:
-            self.image = self.game.character_spritesheet.get_sprite(0, 96, self.width, self.height)
+            self.image = self.game.character_spritesheet.get_sprite(0, 105, self.width, self.height)
         else:
             self.image = self.left_animation[math.floor(self.animation_loop)]
             self.animation_loop += 0.1
@@ -57,7 +57,7 @@ def Player_animation_animate(self):
 
     if self.facing == 'right':
         if self.x_change == 0:
-            self.image = self.game.character_spritesheet.get_sprite(0, 64, self.width, self.height)
+            self.image = self.game.character_spritesheet.get_sprite(0, 71, self.width, self.height)
         else:
             self.image = self.right_animation[math.floor(self.animation_loop)]
             self.animation_loop += 0.1
