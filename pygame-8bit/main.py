@@ -50,8 +50,6 @@ class Game:
             self.update()
             self.draw()
 
-        """self.running = False"""
-
     def game_over(self):
         pass
 
@@ -61,8 +59,10 @@ class Game:
 #Creacion del mapa y del bucle del juego
 TILEMAP = maps.world_1.stage_1
 game = Game()
+game.intro_screen("Start")
 game.new(TILEMAP)
 while game.running:
     game.main()
 
 pygame.quit()
+sys.exit()

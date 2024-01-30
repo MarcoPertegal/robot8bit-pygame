@@ -58,10 +58,13 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += self.y_change
         self.collide_walls("Y")
 
+        self.collide_lava()
+
         self.x_change = 0
         self.y_change = 0
 
     def collide_walls(self, direction):
+        global LIVE_POINTS
         if direction == 'X':
             hits = pygame.sprite.spritecollide(self, self.game.walls, False)
             if hits:
@@ -73,6 +76,11 @@ class Player(pygame.sprite.Sprite):
                     for sprite in self.game.all_skins:
                         sprite.rect.x -= PLAYER_SPEED
                     self.rect.x = hits[0].rect.right
+                LIVE_POINTS -= 1
+                print(LIVE_POINTS)
+                if LIVE_POINTS <= 0:
+                    self.kill()
+                    self.game.playing = False
 
         if direction == 'Y':
             hits = pygame.sprite.spritecollide(self, self.game.walls, False)
@@ -85,6 +93,21 @@ class Player(pygame.sprite.Sprite):
                     for sprite in self.game.all_skins:
                         sprite.rect.y -= PLAYER_SPEED
                     self.rect.y = hits[0].rect.bottom
+                LIVE_POINTS -= 1
+                print(LIVE_POINTS)
+                if LIVE_POINTS <= 0:
+                    self.kill()
+                    self.game.playing = False
+
+    def collide_lava(self):
+        global LIVE_POINTS
+        hits = pygame.sprite.spritecollide(self, self.game.lava, False)
+        if hits:
+            LIVE_POINTS -= 0.5
+
+        if LIVE_POINTS <= 0:
+            self.kill()
+            self.game.playing = False
 
     def animate(self):
         Player_animation_animate(self)
