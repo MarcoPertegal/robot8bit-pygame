@@ -1,22 +1,9 @@
 class world_1:
-    stage_1 = [
-        'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
-        'W.......................................W',
-        'W.................................L.....W',
-        'W................................LL.....W',
-        'W..................WW..............L....W',
-        'W............WWWWWWWWWWWWW..............W',
-        'W......................WWWWWW...........W',
-        'W.......................................W',
-        'W.......................................W',
-        'W...................P...................W',
-        'W.............................LLL.......W',
-        'W....WWWWWWWWWWWW............LLLL.......W',
-        'W....WW....WWWWWW.............LLL.......W',
-        'W.....W.................................W',
-        'W......WWWWWWWWWWWWW....................W',
-        'W.......................................W',
-        'W.......................................W',
-        'W...........LLLLLLL.....................W',
-        'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
-    ]
+    def load_map(self):
+        map_file = 'mapa.txt'
+        with open('map.txt', 'r') as archivo:
+            first_line = archivo.readline().strip().split(', ')
+            objets = {item.split(':')[0]: int(item.split(':')[1]) for item in first_line}
+            map = [linea.strip() for linea in archivo]
+
+        return objets, map

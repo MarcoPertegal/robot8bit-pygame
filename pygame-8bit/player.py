@@ -1,5 +1,6 @@
 import pygame
 from sprites import *
+import sys
 import maps
 from sounds import *
 import random
@@ -80,7 +81,7 @@ class Player(pygame.sprite.Sprite):
                 print(LIVE_POINTS)
                 if LIVE_POINTS <= 0:
                     self.kill()
-                    self.game.playing = False
+                    self.game.game_over()
 
         if direction == 'Y':
             hits = pygame.sprite.spritecollide(self, self.game.walls, False)
@@ -97,7 +98,7 @@ class Player(pygame.sprite.Sprite):
                 print(LIVE_POINTS)
                 if LIVE_POINTS <= 0:
                     self.kill()
-                    self.game.playing = False
+                    self.game.game_over()
 
     def collide_lava(self):
         global LIVE_POINTS
@@ -107,7 +108,7 @@ class Player(pygame.sprite.Sprite):
 
         if LIVE_POINTS <= 0:
             self.kill()
-            self.game.playing = False
+            self.game.game_over()
 
     def animate(self):
         Player_animation_animate(self)

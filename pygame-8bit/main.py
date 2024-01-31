@@ -53,7 +53,14 @@ class Game:
             self.draw()
 
     def game_over(self):
-        pass
+        self.intro_screen("Restart")
+
+
+    def restart_game(self):
+        self.all_skins.empty()
+        self.walls.empty()
+        self.lava.empty()
+        self.new(TILEMAP)
 
     def intro_screen(self, startresume):
         intro = True
@@ -63,6 +70,7 @@ class Game:
 
         play_button = Button(SCREEN_WIDTH/2-BTN_W/2, 200, BTN_W, BTN_H, 'black', 'gray', f"{startresume} Game", 32)
         exit_button = Button(SCREEN_WIDTH/2-BTN_W/2, 400, BTN_W, BTN_H, 'black', 'gray', "Exit Game", 32)
+
         while intro:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -74,6 +82,9 @@ class Game:
 
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
+                self.running = True
+                self.playing = True
+
             elif exit_button.is_pressed(mouse_pos, mouse_pressed):
                 self.running = False
                 pygame.quit()
@@ -88,7 +99,10 @@ class Game:
 
 
 #Creacion del mapa y del bucle del juego
-TILEMAP = maps.world_1.stage_1
+#TILEMAP = maps.world_1.stage_1
+world_instance = maps.world_1()
+objects, TILEMAP = world_instance.load_map()
+print(TILEMAP)
 game = Game()
 game.intro_screen("Start")
 game.new(TILEMAP)
