@@ -16,10 +16,12 @@ class Game:
         self.running = True
         self.font = pygame.font.Font('assets/game_font.ttf', 32)
         self.groundsheet = Spritesheet('assets/gound4.png')
-        self.character_spritesheet = Spritesheet('assets/character4.png')
+        self.character_spritesheet = Spritesheet('assets/character2.png')
         self.wallsheet = Spritesheet('assets/spikes.png')
         self.lavasheet = Spritesheet('assets/lava.png')
         self.intro_background = pygame.image.load("assets/intro_background.png")
+        self.diamondsheet = Spritesheet('assets/diamond.png')
+        self.bombsheet = Spritesheet('assets/bomb2.png')
     def createTileMap(self, tilemap):
         build_map(self, tilemap)
 
@@ -28,6 +30,8 @@ class Game:
         self.all_skins = pygame.sprite.LayeredUpdates()
         self.walls = pygame.sprite.LayeredUpdates()
         self.lava = pygame.sprite.LayeredUpdates()
+        self.diamond = pygame.sprite.LayeredUpdates()
+        self.bomb = pygame.sprite.LayeredUpdates()
         self.createTileMap(tilemap)
 
 
@@ -101,8 +105,9 @@ class Game:
 #Creacion del mapa y del bucle del juego
 #TILEMAP = maps.world_1.stage_1
 world_instance = maps.world_1()
-objects, TILEMAP = world_instance.load_map()
+objects,TILEMAP = world_instance.load_map()
 print(TILEMAP)
+#print(objects)
 game = Game()
 game.intro_screen("Start")
 game.new(TILEMAP)

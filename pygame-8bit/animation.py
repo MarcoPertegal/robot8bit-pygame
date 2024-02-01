@@ -3,16 +3,13 @@ import math, pygame, sprites
 
 def Player_animation(self):
     self.down_animation = [
-        # Lo que va entre parentesiss son las cordenadas para seleccinar cada posicion de personaje en la imagen
-        # self.game.character_spritesheet.get_sprite(210, 0, self.width, self.height), si quiero pintar otro
-        # sprite tengo que ir cambiando los numeros de los pixeles teniendo una imagen de 200 por 200
         self.game.character_spritesheet.get_sprite(0, 0, self.width, self.height),
         self.game.character_spritesheet.get_sprite(32, 0, self.width, self.height),
         self.game.character_spritesheet.get_sprite(64, 0, self.width, self.height)
     ]
     self.up_animation = [
         self.game.character_spritesheet.get_sprite(0, 38, self.width, self.height),
-        self.game.character_spritesheet.get_sprite(38, 38, self.width, self.height),
+        self.game.character_spritesheet.get_sprite(37, 37, self.width, self.height),
         self.game.character_spritesheet.get_sprite(64, 38, self.width, self.height)
     ]
     self.left_animation = [

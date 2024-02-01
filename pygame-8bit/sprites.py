@@ -85,3 +85,35 @@ class Button:
                 return True
             return False
         return False
+
+class Diamond(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = BLOCK_LAYER
+        self.groups = self.game.all_skins, self.game.diamond
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.width, self.height = TILESIZE, TILESIZE
+
+        self.image = self.game.diamondsheet.sheet
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = self.x, self.y
+        self.image.set_colorkey('black')
+
+class Bomb(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = BLOCK_LAYER
+        self.groups = self.game.all_skins, self.game.bomb
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.width, self.height = TILESIZE, TILESIZE
+
+        self.image = self.game.bombsheet.sheet
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = self.x, self.y
+        self.image.set_colorkey('black')

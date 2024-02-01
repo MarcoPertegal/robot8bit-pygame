@@ -11,3 +11,9 @@ def build_map(self, tilemap):
                 Wall(self, j, i)
             if column == 'L':
                 Lava(self, j, i)
+            if column == 'D':
+                Diamond(self, j, i)
+            if column == 'B':
+                Bomb(self, i, j)
+
+
