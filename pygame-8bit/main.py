@@ -1,4 +1,6 @@
 import pygame
+
+import player
 from config import *
 from sounds import *
 from player import *
@@ -52,8 +54,10 @@ class Game:
         self.all_skins.update()
 
     def draw(self):
-        self.screen.blit(self.game_background, (0,0))
+        self.screen.blit(self.game_background, (0, 0))
         self.all_skins.draw(self.screen)
+        self.draw_health_bar()
+        self.draw_inventory()
         self.clock.tick(FPS)
         pygame.display.update()
 
@@ -65,7 +69,6 @@ class Game:
 
     def game_over(self):
         self.intro_screen("Restart")
-
 
     def restart_game(self):
         self.all_skins.empty()
@@ -108,12 +111,33 @@ class Game:
             self.clock.tick(FPS)
             pygame.display.update()
 
+    def draw_health_bar(self):
+        background_rect = pygame.Rect(SCREEN_WIDTH - 200, 10, 200, 20)
+        background_color = (0, 0, 0)
+        pygame.draw.rect(self.screen, background_color, background_rect)
+
+        bar_width = int((self.Player.live_points / 200) * 200)
+        bar_height = 20
+        bar_color = (255, 0, 0)
+        bar_rect = pygame.Rect(SCREEN_WIDTH - bar_width, 10, bar_width, bar_height)
+        pygame.draw.rect(self.screen, bar_color, bar_rect)
+
+    def draw_inventory(self):
+        inventory_start_x = SCREEN_WIDTH - 220
+        inventory_start_y = 40
+
+        for i, (obj_type, count) in enumerate(self.Player.inventory.items()):
+            obj_text = self.font.render(f"{obj_type}: {count}", True, (255, 255, 255))
+            obj_text_rect = obj_text.get_rect(topleft=(inventory_start_x, inventory_start_y + i * 30))
+            self.screen.blit(obj_text, obj_text_rect)
+
+
 
 #Creacion del mapa y del bucle del juego
 world_instance = maps.world_1()
 objects,TILEMAP = world_instance.load_map()
 print(TILEMAP)
-#print(objects)
+print(objects)
 game = Game()
 game.intro_screen("Start")
 game.new(TILEMAP)

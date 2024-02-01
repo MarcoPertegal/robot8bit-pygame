@@ -1,6 +1,5 @@
 import math, pygame, sprites
 
-
 def Player_animation(self):
     self.down_animation = [
         self.game.character_spritesheet.get_sprite(0, 0, self.width, self.height),
