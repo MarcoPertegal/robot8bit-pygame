@@ -1,9 +1,9 @@
 B:3, D:3, S:1, H:3
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W.......................................W
-W.......LLLLLLLLLLLLLLLLLLLLLLLLLLL.....W
+W.......LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLW
 W................................LL.....W
-W..................WW..............L....W
+W..D.B.H.S.........WW..............L....W
 W............WWWWWWWWWWWWW..............W
 W......................WWWWWW...........W
 W.......................................W

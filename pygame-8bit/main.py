@@ -20,8 +20,12 @@ class Game:
         self.wallsheet = Spritesheet('assets/spikes.png')
         self.lavasheet = Spritesheet('assets/lava.png')
         self.intro_background = pygame.image.load("assets/intro_background.png")
+        self.game_background = pygame.image.load("assets/game_background.PNG")
         self.diamondsheet = Spritesheet('assets/diamond.png')
         self.bombsheet = Spritesheet('assets/bomb2.png')
+        self.shieldsheet = Spritesheet('assets/shiled.png')
+        self.healsheet = Spritesheet('assets/heal.png')
+        self.character_suit = Spritesheet('assets/character_suit.png')
     def createTileMap(self, tilemap):
         build_map(self, tilemap)
 
@@ -32,6 +36,9 @@ class Game:
         self.lava = pygame.sprite.LayeredUpdates()
         self.diamond = pygame.sprite.LayeredUpdates()
         self.bomb = pygame.sprite.LayeredUpdates()
+        self.shield = pygame.sprite.LayeredUpdates()
+        self.heal = pygame.sprite.LayeredUpdates()
+        self.shield = pygame.sprite.LayeredUpdates()
         self.createTileMap(tilemap)
 
 
@@ -45,7 +52,7 @@ class Game:
         self.all_skins.update()
 
     def draw(self):
-        self.screen.fill("black")
+        self.screen.blit(self.game_background, (0,0))
         self.all_skins.draw(self.screen)
         self.clock.tick(FPS)
         pygame.display.update()
@@ -103,7 +110,6 @@ class Game:
 
 
 #Creacion del mapa y del bucle del juego
-#TILEMAP = maps.world_1.stage_1
 world_instance = maps.world_1()
 objects,TILEMAP = world_instance.load_map()
 print(TILEMAP)

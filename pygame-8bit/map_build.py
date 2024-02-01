@@ -14,6 +14,11 @@ def build_map(self, tilemap):
             if column == 'D':
                 Diamond(self, j, i)
             if column == 'B':
-                Bomb(self, i, j)
+                Bomb(self, j, i)
+            if column == 'H':
+                Heal(self, j, i)
+            if column == 'S':
+                Shiled(self, j, i)
+
 
 
