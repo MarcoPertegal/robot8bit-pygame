@@ -5,7 +5,6 @@ class world_1:
             first_line = file.readline().strip().split(', ')
             objets = {item.split(':')[0]: int(item.split(':')[1]) for item in first_line}
             mapa = [linea.strip() for linea in file]
-
         point_coords = []
         for y in range(len(mapa)):
             for x in range(len(mapa[y])):
