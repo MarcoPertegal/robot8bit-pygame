@@ -12,7 +12,6 @@ class Player(pygame.sprite.Sprite):
         self.groups = self.game.all_skins
         self.live_points = 200
         pygame.sprite.Sprite.__init__(self, self.groups)
-        #COlocar al player en el centro de la pantalla de 800 por 600
         self.x, self.y = 400, 300
         self.width, self.height = TILESIZE, TILESIZE
         self.x_change = 0
@@ -25,11 +24,13 @@ class Player(pygame.sprite.Sprite):
         self.inventory = {"diamond": 0, "bomb": 0, "shield": 0, "heal": 0}
         self.heal_sound = healing_sound
         self.bomb_sound = bomb_sound
+        self.take_bomb_sound = take_bomb_sound
+        self.take_shield_sound = take_shield_sound
+        self.take_diamond_sound = take_diamond_sound
         self.shield_active = False
         self.shield_key_pressed = False
         self.bomb_key_pressed = False
 
-        Player_animation(self)
     def movement(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
@@ -113,13 +114,24 @@ class Player(pygame.sprite.Sprite):
                 self.game.game_over()
 
     def animate(self):
-        Player_animation_animate(self)
+        if self.shield_active:
+            Player_animation_suit(self)
+            Player_animation_animate_suit(self)
+        else:
+            Player_animation(self)
+            Player_animation_animate(self)
 
     def collect_object(self, obj_type):
         if obj_type in self.inventory:
             self.inventory[obj_type] += 1
             print(f"Collected {obj_type} - Total: {self.inventory[obj_type]}")
             self.healing(obj_type)
+            if obj_type == "bomb":
+                self.take_bomb_sound.play()
+            if obj_type == "shield":
+                self.take_shield_sound.play()
+            if obj_type == "diamond":
+                self.take_diamond_sound.play()
 
     def healing(self, obj_type):
         if obj_type == "heal":
@@ -129,24 +141,22 @@ class Player(pygame.sprite.Sprite):
                 self.live_points = 200
             print(f"Healed! Current Health: {self.live_points}")
 
-
     def collide_objects(self):
         object_hits = pygame.sprite.spritecollide(self, self.game.diamond, True)
-        for obj in object_hits:
+        for _ in object_hits:
             self.collect_object("diamond")
 
         object_hits = pygame.sprite.spritecollide(self, self.game.bomb, True)
-        for obj in object_hits:
+        for _ in object_hits:
             self.collect_object("bomb")
 
         object_hits = pygame.sprite.spritecollide(self, self.game.shield, True)
-        for obj in object_hits:
+        for _ in object_hits:
             self.collect_object("shield")
 
         object_hits = pygame.sprite.spritecollide(self, self.game.heal, True)
-        for obj in object_hits:
+        for _ in object_hits:
             self.collect_object("heal")
-
 
     def activate_shield(self):
         if self.inventory["shield"] > 0:
@@ -169,7 +179,6 @@ class Player(pygame.sprite.Sprite):
                     self.deactivate_shield()
 
         self.shield_key_pressed = current_shield_key_state
-
 
     def use_bomb(self):
         if self.inventory["bomb"] > 0:

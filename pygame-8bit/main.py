@@ -16,24 +16,19 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.running = True
-        self.font = pygame.font.Font('assets/game_font.ttf', 32)
-        self.groundsheet = Spritesheet('assets/gound4.png')
-        self.character_spritesheet = Spritesheet('assets/character2.png')
-        self.wallsheet = Spritesheet('assets/spikes.png')
-        self.lavasheet = Spritesheet('assets/lava.png')
-        self.intro_background = pygame.image.load("assets/intro_background.png")
-        self.game_background = pygame.image.load("assets/game_background.PNG")
-        self.diamondsheet = Spritesheet('assets/diamond.png')
-        self.bombsheet = Spritesheet('assets/bomb2.png')
-        self.shieldsheet = Spritesheet('assets/shiled.png')
-        self.healsheet = Spritesheet('assets/heal.png')
-        self.character_suit = Spritesheet('assets/character_suit.png')
+        self.font = pygame.font.Font(game_font, 32)
+        self.groundsheet = Spritesheet(ground_sprite)
+        self.character_spritesheet = Spritesheet(character_default_sprite)
+        self.wallsheet = Spritesheet(wall_sprite)
+        self.lavasheet = Spritesheet(lava_sprite)
+        self.intro_background = pygame.image.load(intro_background_sprite)
+        self.game_background = pygame.image.load(game_background_sprite)
+        self.diamondsheet = Spritesheet(diamond_sprite)
+        self.bombsheet = Spritesheet(bomb_sprite)
+        self.shieldsheet = Spritesheet(shield_sprite)
+        self.healsheet = Spritesheet(heal_sprite)
+        self.character_suit = Spritesheet(character_suit_sprite)
         self.background_sound = background_sound
-        background_sound.play(-1)
-    def createTileMap(self, tilemap):
-        build_map(self, tilemap)
-
-    def new(self, tilemap):
         self.playing = True
         self.all_skins = pygame.sprite.LayeredUpdates()
         self.walls = pygame.sprite.LayeredUpdates()
@@ -43,8 +38,13 @@ class Game:
         self.shield = pygame.sprite.LayeredUpdates()
         self.heal = pygame.sprite.LayeredUpdates()
         self.shield = pygame.sprite.LayeredUpdates()
-        self.createTileMap(tilemap)
+        self.total_diamonds = objects.get('D', 0)
 
+    def createTileMap(self, tilemap):
+        build_map(self, tilemap)
+
+    def new(self, tilemap):
+        self.createTileMap(tilemap)
 
     def events(self):
         for event in pygame.event.get():
@@ -54,6 +54,7 @@ class Game:
 
     def update(self):
         self.all_skins.update()
+        self.check_victory_condition()
 
     def draw(self):
         self.screen.blit(self.game_background, (0, 0))
@@ -69,16 +70,43 @@ class Game:
             self.Player.handle_bomb_usage()
             self.update()
             self.draw()
-            pygame.mixer.music.get_busy()
 
     def game_over(self):
-        self.intro_screen("Restart")
+        game_over_text = self.font.render("Game Over!", True, "red")
+        game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50))
 
-    def restart_game(self):
-        self.all_skins.empty()
-        self.walls.empty()
-        self.lava.empty()
-        self.new(TILEMAP)
+        restart_button = Button(SCREEN_WIDTH / 2 - BTN_W / 2, SCREEN_HEIGHT / 2, BTN_W, BTN_H, 'black', 'gray',
+                                "Restart Game", 32)
+        exit_button = Button(SCREEN_WIDTH / 2 - BTN_W / 2, SCREEN_HEIGHT / 2 + 200, BTN_W, BTN_H, 'black', 'gray',
+                             "Exit Game", 32)
+
+        game_over = True
+        while game_over:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    game_over = False
+                    self.running = False
+
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            if restart_button.is_pressed(mouse_pos, mouse_pressed):
+                game_over = False
+                self.running = True
+                self.playing = True
+                self.restart_game()
+
+            elif exit_button.is_pressed(mouse_pos, mouse_pressed):
+                self.running = False
+                pygame.quit()
+                sys.exit()
+
+            self.screen.blit(self.game_background, (0, 0))
+            self.screen.blit(game_over_text, game_over_rect)
+            self.screen.blit(restart_button.image, restart_button.rect)
+            self.screen.blit(exit_button.image, exit_button.rect)
+            self.clock.tick(FPS)
+            pygame.display.update()
 
     def intro_screen(self, startresume):
         intro = True
@@ -108,7 +136,7 @@ class Game:
                 pygame.quit()
                 sys.exit()
 
-            self.screen.blit(self.intro_background, (0,0))
+            self.screen.blit(self.intro_background, (0, 0))
             self.screen.blit(title, title_rect)
             self.screen.blit(play_button.image, play_button.rect)
             self.screen.blit(exit_button.image, exit_button.rect)
@@ -135,16 +163,78 @@ class Game:
             obj_text_rect = obj_text.get_rect(topleft=(inventory_start_x, inventory_start_y + i * 30))
             self.screen.blit(obj_text, obj_text_rect)
 
+    def check_victory_condition(self):
+        if self.Player.inventory["diamond"] == self.total_diamonds:
+            self.victory_screen()
+
+    def start_game(self):
+        start_resume_option = "Start"  # You can customize this based on whether it's a new game or a resumed game
+        self.intro_screen(start_resume_option)
+        self.new(TILEMAP)
+        while self.running:
+            self.main()
+
+    def victory_screen(self):
+        victory = True
+
+        victory_text = self.font.render("Congratulations! You have won!", True, "black")
+        victory_rect = victory_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50))
+
+        restart_button = Button(SCREEN_WIDTH / 2 - BTN_W / 2, SCREEN_HEIGHT / 2, BTN_W, BTN_H, 'black', 'gray',
+                                "Restart Game", 32)
+        exit_button = Button(SCREEN_WIDTH / 2 - BTN_W / 2, SCREEN_HEIGHT / 2 + 200, BTN_W, BTN_H, 'black', 'gray',
+                             "Exit Game", 32)
+
+        while victory:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    victory = False
+                    self.running = False
+
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            if restart_button.is_pressed(mouse_pos, mouse_pressed):
+                victory = False
+                self.running = True
+                self.playing = True
+                self.new(TILEMAP)
+                self.restart_game()
+
+            elif exit_button.is_pressed(mouse_pos, mouse_pressed):
+                self.running = False
+                pygame.quit()
+                sys.exit()
+
+            self.screen.blit(self.game_background, (0, 0))
+            self.screen.blit(victory_text, victory_rect)
+            self.screen.blit(restart_button.image, restart_button.rect)
+            self.screen.blit(exit_button.image, exit_button.rect)
+            self.clock.tick(FPS)
+            pygame.display.update()
+
+    def restart_game(self):
+        self.all_skins.empty()
+        self.walls.empty()
+        self.lava.empty()
+        self.diamond.empty()
+        self.bomb.empty()
+        self.shield.empty()
+        self.heal.empty()
+        objects, TILEMAP = world_instance.load_map()
+
+        self.new(TILEMAP)
 
 
 
-#Creacion del mapa y del bucle del juego
+
 world_instance = maps.world_1()
 objects,TILEMAP = world_instance.load_map()
 print(TILEMAP)
 print(objects)
+
 game = Game()
-game.intro_screen("Start")
+game.start_game()
 game.new(TILEMAP)
 while game.running:
     game.main()
