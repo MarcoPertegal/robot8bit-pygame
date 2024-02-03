@@ -28,6 +28,8 @@ class Game:
         self.shieldsheet = Spritesheet('assets/shiled.png')
         self.healsheet = Spritesheet('assets/heal.png')
         self.character_suit = Spritesheet('assets/character_suit.png')
+        self.background_sound = background_sound
+        background_sound.play(-1)
     def createTileMap(self, tilemap):
         build_map(self, tilemap)
 
@@ -64,8 +66,10 @@ class Game:
     def main(self):
         while self.playing:
             self.events()
+            self.Player.handle_bomb_usage()
             self.update()
             self.draw()
+            pygame.mixer.music.get_busy()
 
     def game_over(self):
         self.intro_screen("Restart")
@@ -130,6 +134,7 @@ class Game:
             obj_text = self.font.render(f"{obj_type}: {count}", True, (255, 255, 255))
             obj_text_rect = obj_text.get_rect(topleft=(inventory_start_x, inventory_start_y + i * 30))
             self.screen.blit(obj_text, obj_text_rect)
+
 
 
 
