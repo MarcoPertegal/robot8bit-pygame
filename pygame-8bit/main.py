@@ -164,13 +164,39 @@ class Game:
         pygame.draw.rect(self.screen, bar_color, bar_rect)
 
     def draw_inventory(self):
-        inventory_start_x = SCREEN_WIDTH - 220
+        inventory_start_x = SCREEN_WIDTH - 90
         inventory_start_y = 40
+        icon_size = 30
+        background_color = (0, 0, 0)
+        padding = 10
 
         for i, (obj_type, count) in enumerate(self.Player.inventory.items()):
-            obj_text = self.font.render(f"{obj_type}: {count}", True, (255, 255, 255))
-            obj_text_rect = obj_text.get_rect(topleft=(inventory_start_x, inventory_start_y + i * 30))
-            self.screen.blit(obj_text, obj_text_rect)
+            if obj_type == "diamond":
+                icon_image = pygame.image.load("assets/diamond.png")
+            elif obj_type == "bomb":
+                icon_image = pygame.image.load("assets/bomb.png")
+            elif obj_type == "shield":
+                icon_image = pygame.image.load("assets/shield.png")
+            elif obj_type == "heal":
+                icon_image = pygame.image.load("assets/heal.png")
+
+            icon_image = pygame.transform.scale(icon_image, (icon_size, icon_size))
+
+            background_rect = pygame.Rect(
+                inventory_start_x - padding,
+                inventory_start_y + i * (icon_size + 5) - padding,
+                icon_size + 55 + 2 * padding,
+                icon_size + 10 + 2 * padding
+            )
+            pygame.draw.rect(self.screen, background_color, background_rect)
+
+            icon_rect = icon_image.get_rect(topleft=(inventory_start_x, inventory_start_y + i * (icon_size + 5)))
+            self.screen.blit(icon_image, icon_rect)
+
+            count_text = self.font.render(str(count), True, (255, 255, 255))
+            count_rect = count_text.get_rect(
+                midleft=(inventory_start_x + icon_size + 35, inventory_start_y + i * (icon_size + 5) + icon_size / 2))
+            self.screen.blit(count_text, count_rect)
 
     def check_victory_condition(self):
         if self.Player.inventory["diamond"] == self.total_diamonds:

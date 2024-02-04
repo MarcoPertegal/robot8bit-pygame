@@ -23,5 +23,5 @@ intro_background_sprite = "assets/intro_background.png"
 game_background_sprite = "assets/game_background.png"
 diamond_sprite = 'assets/diamond.png'
 bomb_sprite = 'assets/bomb.png'
-shield_sprite = 'assets/shiled.png'
+shield_sprite = 'assets/shield.png'
 heal_sprite = 'assets/heal.png'

@@ -31,6 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.shield_key_pressed = False
         self.bomb_key_pressed = False
 
+
     def movement(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
