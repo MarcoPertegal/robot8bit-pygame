@@ -42,6 +42,9 @@ class Game:
         self.background_sound = background_sound
         self.gameover_sound = gameover_sound
         self.gameover_sound_played = False
+        self.victory_sound = victory_sound
+        self.victory_sound_played = False
+
 
     def createTileMap(self, tilemap):
         build_map(self, tilemap)
@@ -81,7 +84,7 @@ class Game:
 
         self.stop_background_sound()
 
-        game_over_text = self.font.render("Game Over!", True, "red")
+        game_over_text = self.font.render("Game Over!", True, "white")
         game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50))
 
         restart_button = Button(SCREEN_WIDTH / 2 - BTN_W / 2, SCREEN_HEIGHT / 2, BTN_W, BTN_H, 'black', 'gray',
@@ -211,10 +214,14 @@ class Game:
             self.main()
 
     def victory_screen(self):
+        if not self.victory_sound_played:
+            self.play_victory_sound()
+            self.victory_sound_played = True
+
         self.stop_background_sound()
         victory = True
 
-        victory_text = self.font.render("Congratulations! You have won!", True, "black")
+        victory_text = self.font.render("You have won!", True, "white")
         victory_rect = victory_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50))
 
         restart_button = Button(SCREEN_WIDTH / 2 - BTN_W / 2, SCREEN_HEIGHT / 2, BTN_W, BTN_H, 'black', 'gray',
@@ -272,6 +279,9 @@ class Game:
 
     def play_gameover_sound(self):
         pygame.mixer.Sound(self.gameover_sound).play()
+
+    def play_victory_sound(self):
+        pygame.mixer.Sound(self.victory_sound).play()
 
 
 
