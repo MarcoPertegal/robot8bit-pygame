@@ -39,6 +39,9 @@ class Game:
         self.heal = pygame.sprite.LayeredUpdates()
         self.shield = pygame.sprite.LayeredUpdates()
         self.total_diamonds = objects.get('D', 0)
+        self.background_sound = background_sound
+        self.gameover_sound = gameover_sound
+        self.gameover_sound_played = False
 
     def createTileMap(self, tilemap):
         build_map(self, tilemap)
@@ -72,6 +75,12 @@ class Game:
             self.draw()
 
     def game_over(self):
+        if not self.gameover_sound_played:
+            self.play_gameover_sound()
+            self.gameover_sound_played = True
+
+        self.stop_background_sound()
+
         game_over_text = self.font.render("Game Over!", True, "red")
         game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50))
 
@@ -168,13 +177,15 @@ class Game:
             self.victory_screen()
 
     def start_game(self):
-        start_resume_option = "Start"  # You can customize this based on whether it's a new game or a resumed game
+        start_resume_option = "Start"
         self.intro_screen(start_resume_option)
+        self.play_background_sound()
         self.new(TILEMAP)
         while self.running:
             self.main()
 
     def victory_screen(self):
+        self.stop_background_sound()
         victory = True
 
         victory_text = self.font.render("Congratulations! You have won!", True, "black")
@@ -214,6 +225,7 @@ class Game:
             pygame.display.update()
 
     def restart_game(self):
+        self.stop_background_sound()
         self.all_skins.empty()
         self.walls.empty()
         self.lava.empty()
@@ -222,8 +234,18 @@ class Game:
         self.shield.empty()
         self.heal.empty()
         objects, TILEMAP = world_instance.load_map()
-
         self.new(TILEMAP)
+        self.play_background_sound()
+
+    def play_background_sound(self):
+        pygame.mixer.music.load(self.background_sound)
+        pygame.mixer.music.play(-1)
+
+    def stop_background_sound(self):
+        pygame.mixer.music.stop()
+
+    def play_gameover_sound(self):
+        pygame.mixer.Sound(self.gameover_sound).play()
 
 
 
