@@ -18,7 +18,7 @@ W....LLLLLLLL..............................WWWW..W
 W........LLLLLL........................WWWWWWWWWWW
 W..........LLLLLLLL..............................W
 W...........LLL.LLL..............................W
-W...........LL...LL.............WWWWWWW.WWWWWWWWWW
+W...........LL...LL.............WWWWWW..WWWWWWWWWW
 W............WWW..............WWWW..LLLLLLLLLLLLLW
 W............LLLLLLL.......WWWWLLL...............W
 W.............LLLLL........WWWLLLLLLLLLLLLLLLL...W
