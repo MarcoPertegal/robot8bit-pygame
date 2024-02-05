@@ -289,9 +289,7 @@ class Game:
 
 
 world_instance = maps.world_1()
-objects,TILEMAP = world_instance.load_map()
-print(TILEMAP)
-print(objects)
+objects, TILEMAP = world_instance.load_map()
 
 game = Game()
 game.start_game()
