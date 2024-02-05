@@ -19,6 +19,8 @@ def build_map(self, tilemap):
                 Heal(self, j, i)
             if column == 'S':
                 Shiled(self, j, i)
+            if column == 'R':
+                ReinforcedWall(self, j, i)
 
 
 

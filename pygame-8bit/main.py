@@ -20,6 +20,7 @@ class Game:
         self.groundsheet = Spritesheet(ground_sprite)
         self.character_spritesheet = Spritesheet(character_default_sprite)
         self.wallsheet = Spritesheet(wall_sprite)
+        self.reinforced_wallsheet = Spritesheet(reinforced_wall_sprite)
         self.lavasheet = Spritesheet(lava_sprite)
         self.intro_background = pygame.image.load(intro_background_sprite)
         self.game_background = pygame.image.load(game_background_sprite)
@@ -32,6 +33,7 @@ class Game:
         self.playing = True
         self.all_skins = pygame.sprite.LayeredUpdates()
         self.walls = pygame.sprite.LayeredUpdates()
+        self.reinforced_walls = pygame.sprite.LayeredUpdates()
         self.lava = pygame.sprite.LayeredUpdates()
         self.diamond = pygame.sprite.LayeredUpdates()
         self.bomb = pygame.sprite.LayeredUpdates()

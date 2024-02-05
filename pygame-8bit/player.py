@@ -59,10 +59,15 @@ class Player(pygame.sprite.Sprite):
         self.movement()
         self.animate()
         self.collide_objects()
+
         self.rect.x += self.x_change
         self.collide_walls("X")
+        self.collide_super_walls("X")
+
         self.rect.y += self.y_change
         self.collide_walls("Y")
+        self.collide_super_walls("Y")
+
         self.handle_shield_activation()
         self.collide_lava()
 
@@ -89,6 +94,41 @@ class Player(pygame.sprite.Sprite):
 
         if direction == 'Y':
             hits = pygame.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                if self.y_change > 0:
+                    for sprite in self.game.all_skins:
+                        sprite.rect.y += PLAYER_SPEED
+                    self.rect.y = hits[0].rect.top - self.rect.height
+                if self.y_change < 0:
+                    for sprite in self.game.all_skins:
+                        sprite.rect.y -= PLAYER_SPEED
+                    self.rect.y = hits[0].rect.bottom
+                self.live_points -= 1
+                print(self.live_points)
+                if self.live_points <= 0:
+                    self.kill()
+                    self.game.game_over()
+
+    def collide_super_walls(self, direction):
+        if direction == 'X':
+            hits = pygame.sprite.spritecollide(self, self.game.reinforced_walls, False)
+            if hits:
+                if self.x_change > 0:
+                    for sprite in self.game.all_skins:
+                        sprite.rect.x += PLAYER_SPEED
+                    self.rect.x = hits[0].rect.left - self.rect.width
+                if self.x_change < 0:
+                    for sprite in self.game.all_skins:
+                        sprite.rect.x -= PLAYER_SPEED
+                    self.rect.x = hits[0].rect.right
+                self.live_points -= 1
+                print(self.live_points)
+                if self.live_points <= 0:
+                    self.kill()
+                    self.game.game_over()
+
+        if direction == 'Y':
+            hits = pygame.sprite.spritecollide(self, self.game.reinforced_walls, False)
             if hits:
                 if self.y_change > 0:
                     for sprite in self.game.all_skins:
@@ -176,6 +216,7 @@ class Player(pygame.sprite.Sprite):
             if self.inventory["shield"] > 0:
                 if not self.shield_active:
                     self.activate_shield()
+                    #METER SONIDO AL PONER ESCUDO
                 else:
                     self.deactivate_shield()
 
